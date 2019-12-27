@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityStandardAssets.Characters.ThirdPerson;
 
 public class PlayerController : MonoBehaviour
 {
     public Camera cam;
     public NavMeshAgent agent;
+    public ThirdPersonCharacter character;
 
     // Update is called once per frame
     private void Start()
     {
         cam = Camera.main;
+        agent.updateRotation = false;
     }
     void Update()
     {
@@ -26,6 +29,14 @@ public class PlayerController : MonoBehaviour
                 agent.SetDestination(hit.point);
             }
             Debug.Log(hit.point);
+        }
+
+        if (agent.remainingDistance > agent.stoppingDistance)
+        {
+            character.Move(agent.desiredVelocity, false, false);
+        } else
+        {
+            character.Move(Vector3.zero, false, false);
         }
     }
 }
